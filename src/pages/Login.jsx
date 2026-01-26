@@ -11,10 +11,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try{
-      awaitdispatch(login({ email, password })).unwrap();
+      await dispatch(login({ email, password })).unwrap();
       navigate("/");
     }
     catch(err){
