@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, signUpUser } from "../api/authAPI"; // <-- use signUpUser for API call
+import { loginUser, signupUser } from "../api/authAPI"; // <-- use signupUser for API call
 
 // Async thunk for login
 export const login = createAsyncThunk(
@@ -15,17 +15,18 @@ export const login = createAsyncThunk(
 );
 
 // Async thunk for signup
-export const signUp = createAsyncThunk(
-  "auth/signUp",
+export const signup = createAsyncThunk(
+  "auth/signup",
   async (userInfo, { rejectWithValue }) => { 
     try {
-      const data = await signUpUser(userInfo); 
+      const data = await signupUser(userInfo); 
       return data.user;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Sign Up failed");
     }
   }
 );
+
 
 const initialState = {
   user: null,
@@ -61,21 +62,20 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
       // signup cases
-      .addCase(signUp.pending, (state) => {
+      .addCase(signup.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(signUp.fulfilled, (state, action) => {
+      .addCase(signup.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         state.isLoggedIn = true;
       })
-      .addCase(signUp.rejected, (state, action) => {
+      .addCase(signup.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export const { logout } = authSlice.actions;
 export default authSlice.reducer;

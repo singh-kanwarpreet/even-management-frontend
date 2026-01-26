@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signUp } from "../features/auth";
+import { signup } from "../features/auth";
 import { useNavigate } from "react-router-dom";
 
-const Signup = () => {
+const signup = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { loading, error } = useSelector((state) => state.auth);
@@ -53,10 +53,10 @@ const Signup = () => {
     };
 
     try {
-      await dispatch(signUp(payload)).unwrap();
+      await dispatch(signup(payload)).unwrap();
       navigate("/");
     } catch (err) {
-      setFormError(err || "Signup failed. Please try again.");
+      setFormError(err || "signup failed. Please try again.");
     }
 
   };
@@ -216,4 +216,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default signup;

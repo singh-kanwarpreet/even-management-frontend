@@ -5,8 +5,8 @@ export const loginUser = async (credentials) => {
   return res.data;
 };
 
-export const signUpUser = async (userInfo) => {
-  const res = await axios.post("auth/user/signUp", userInfo);
+export const signupUser = async (userInfo) => {
+  const res = await axios.post("auth/user/signup", userInfo);
   return res.data;
 }
 
