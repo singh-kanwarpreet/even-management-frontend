@@ -8,5 +8,9 @@ export const loginUser = async (credentials) => {
 export const signupUser = async (userInfo) => {
   const res = await axios.post("auth/user/signup", userInfo);
   return res.data;
-}
+};
 
+export const logoutUser = async () => {
+  const res = await axios.get("auth/user/logout");
+  return res.data;
+};

@@ -19,7 +19,7 @@ const Signup = () => {
     defaultValues: {
       role: "USER",
     },
-    mode: "onBlur"
+    mode: "onBlur",
   });
 
   const role = watch("role");
@@ -73,7 +73,9 @@ const Signup = () => {
               className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -137,7 +139,9 @@ const Signup = () => {
               className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {errors.phone && (
-              <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>
+              <p className="text-red-500 text-xs mt-1">
+                {errors.phone.message}
+              </p>
             )}
           </div>
 
@@ -172,47 +176,47 @@ const Signup = () => {
             </select>
           </div>
 
-          {/* Organizer only fields */}
-          {role === "ORGANIZER" && (
-            <>
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Organization Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Enter organization name"
-                  {...register("organizationName", {
-                    required: "Organization name required",
-                  })}
-                  className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {errors.organizationName && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.organizationName.message}
-                  </p>
-                )}
-              </div>
+          {/* Organizer only fields - always mounted but hidden */}
+          <div style={{ display: role === "ORGANIZER" ? "block" : "none" }}>
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Organization Name
+              </label>
+              <input
+                type="text"
+                placeholder="Enter organization name"
+                {...register("organizationName", {
+                  required:
+                    role === "ORGANIZER" ? "Organization name required" : false,
+                })}
+                className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {errors.organizationName && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.organizationName.message}
+                </p>
+              )}
+            </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Description
-                </label>
-                <textarea
-                  placeholder="Enter description"
-                  {...register("description", {
-                    required: "Description required",
-                  })}
-                  className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-                {errors.description && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.description.message}
-                  </p>
-                )}
-              </div>
-            </>
-          )}
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                Description
+              </label>
+              <textarea
+                placeholder="Enter description"
+                {...register("description", {
+                  required:
+                    role === "ORGANIZER" ? "Description required" : false,
+                })}
+                className="w-full border border-gray-300 px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              {errors.description && (
+                <p className="text-red-500 text-xs mt-1">
+                  {errors.description.message}
+                </p>
+              )}
+            </div>
+          </div>
 
           {/* Submit */}
           <button

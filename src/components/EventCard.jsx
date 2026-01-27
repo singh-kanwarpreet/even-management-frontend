@@ -10,14 +10,19 @@ export default function EventCard({ event }) {
       />
 
       <div className="p-5 space-y-3">
-        <h3 className="font-semibold text-lg md:text-xl text-gray-900">{event.title}</h3>
+        <h3 className="font-semibold text-lg md:text-xl text-gray-900">
+          {event.title}
+        </h3>
 
         <p className="text-sm md:text-base text-gray-500">
           {new Date(event.startTime).toLocaleDateString()}
         </p>
 
         <p className="text-sm md:text-base text-gray-500">
-          Seats left: <span className="font-medium text-gray-700">{event.availableSeats}</span>
+          Seats left:{" "}
+          <span className="font-medium text-gray-700">
+            {event.availableSeats}
+          </span>
         </p>
 
         <Link
