@@ -32,14 +32,14 @@ export const registerForEvent = createAsyncThunk(
 const slice = createSlice({
   name: "registrations",
   initialState: {
-    items: [],
+    registeredEvents: [],
     error: null,
     loading: false,
   },
   extraReducers: (builder) => {
     builder
       .addCase(fetchMyRegistrations.fulfilled, (state, action) => {
-        state.items = action.payload;
+        state.registeredEvents = action.payload;
         state.loading = false;
       })
       .addCase(fetchMyRegistrations.pending, (state) => {
@@ -50,7 +50,7 @@ const slice = createSlice({
         state.loading = false;
       })
       .addCase(registerForEvent.fulfilled, (state, action) => {
-        state.items.push({ event: { _id: action.payload } });
+        state.registeredEvents.push({ event: { _id: action.payload } });
         state.loading = false;
       })
       .addCase(registerForEvent.pending, (state) => {

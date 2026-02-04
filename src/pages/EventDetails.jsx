@@ -1,8 +1,13 @@
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { fetchEventById, updateSelectedEvent } from "../features/events";
-import { registerForEvent } from "../features/registrations";
+import {
+  fetchMyRegistrations,
+  registerForEvent,
+} from "../features/registrations";
+import EventCard from "../components/EventCard";
+
 const EventDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -10,6 +15,29 @@ const EventDetails = () => {
   const event = useSelector((state) => state.events.selectedEvent);
   const loading = useSelector((state) => state.events.loading);
   const error = useSelector((state) => state.events.error);
+  const allEvents = useSelector((state) => state.events.events);
+  const registrations = useSelector(
+    (state) => state.registrations.registeredEvents,
+  );
+
+  useEffect(() => {
+    dispatch(fetchMyRegistrations());
+  }, [dispatch]);
+
+  const registeredIds = useMemo(
+    () => new Set(registrations.map((r) => r.eventId)),
+    [registrations],
+  );
+
+  const recommendedEvents = allEvents
+    ?.filter(
+      (e) =>
+        e._id !== id &&
+        e.status === "UPCOMING" &&
+        e.availableSeats > 0 &&
+        !registeredIds.has(e._id),
+    )
+    .slice(0, 3);
 
   useEffect(() => {
     if (id) dispatch(fetchEventById(id));
@@ -159,6 +187,17 @@ const EventDetails = () => {
           </button>
         )}
       </div>
+      {recommendedEvents?.length > 0 && (
+        <div className="mt-14">
+          <h2 className="text-2xl font-semibold mb-6">Recommended Events</h2>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {recommendedEvents.map((ev) => (
+              <EventCard key={ev._id} event={ev} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
