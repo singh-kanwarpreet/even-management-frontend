@@ -1,31 +1,32 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  fetchMyRegistrationsAPI,
-  registerAPI,
-} from "../api/registerationAPI";
+import { fetchMyRegistrationsAPI, registerAPI } from "../api/registerationAPI";
 
 export const fetchMyRegistrations = createAsyncThunk(
   "registrations/fetchMine",
-  async (_, {rejectWithValue}) => {
+  async (_, { rejectWithValue }) => {
     try {
       const data = await fetchMyRegistrationsAPI();
       return data.registrations;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to fetch registrations");
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to fetch registrations",
+      );
     }
-  }
+  },
 );
 
 export const registerForEvent = createAsyncThunk(
   "registrations/register",
-  async (eventId,{rejectWithValue}) => {
+  async (eventId, { rejectWithValue }) => {
     try {
       await registerAPI(eventId);
       return eventId;
     } catch (error) {
-      return rejectWithValue(error?.response?.data?.message || "Failed to register for event");
+      return rejectWithValue(
+        error?.response?.data?.message || "Failed to register for event",
+      );
     }
-  }
+  },
 );
 
 const slice = createSlice({
@@ -34,7 +35,6 @@ const slice = createSlice({
     items: [],
     error: null,
     loading: false,
-    
   },
   extraReducers: (builder) => {
     builder

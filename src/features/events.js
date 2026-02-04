@@ -37,11 +37,10 @@ const eventsSlice = createSlice({
   name: "events",
   initialState,
   reducers: {
-  updateSelectedEvent: (state, action) => {
-    state.selectedEvent = action.payload;
-  }
-}
-,
+    updateSelectedEvent: (state, action) => {
+      state.selectedEvent = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchEvents.pending, (state) => {

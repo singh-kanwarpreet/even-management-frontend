@@ -18,15 +18,15 @@ export default function Home() {
   const filteredEvents = useMemo(() => {
     return events
       .filter((e) => e.status === "UPCOMING" || e.status === "ONGOING")
-      .filter((e) =>
-        e.title.toLowerCase().includes(search.toLowerCase())
-      )
+      .filter((e) => e.title.toLowerCase().includes(search.toLowerCase()))
       .filter((e) => (mode ? e.mode === mode : true));
   }, [events, search, mode]);
 
   return (
     <div className="max-w-7xl mx-auto p-10">
-      <h1 className="text-3xl font-bold mb-5 mt-9">Upcoming Events</h1>
+      <h1 className="text-3xl font-bold mb-5 mt-18 text-black-600">
+        Upcoming Events
+      </h1>
 
       <div className="flex gap-4 mb-6">
         <input

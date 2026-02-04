@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginUser, signupUser, logoutUser } from "../api/authAPI";
+import {
+  loginUser,
+  signupUser,
+  logoutUser,
+  getCurrentUser,
+} from "../api/authAPI";
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -34,6 +39,14 @@ export const logout = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Logout failed");
     }
+  },
+);
+
+export const getMe = createAsyncThunk(
+  "auth/rememberMe",
+  async (_, { rejectWithValue }) => {
+    const res = await getCurrentUser();
+    return res.user;
   },
 );
 
@@ -90,6 +103,21 @@ const authSlice = createSlice({
       .addCase(logout.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(getMe.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getMe.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isLoggedIn = true;
+      })
+      .addCase(getMe.rejected, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.isLoggedIn = false;
+        state.error = null;
       });
   },
 });

@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchEventById, updateSelectedEvent } from "../features/events";
-import { registerForEvent} from "../features/registrations";
+import { registerForEvent } from "../features/registrations";
 const EventDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -17,19 +17,20 @@ const EventDetails = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-  try {
-    await dispatch(registerForEvent(id)).unwrap();
-    alert("Registration successful!");
-    dispatch(updateSelectedEvent({
-      ...event,
-      isRegistered: true,
-      availableSeats: event.availableSeats - 1,
-    }));
-  } catch (err) {
-    console.error("Error during registration:", err);
-  }
-};
-
+    try {
+      await dispatch(registerForEvent(id)).unwrap();
+      alert("Registration successful!");
+      dispatch(
+        updateSelectedEvent({
+          ...event,
+          isRegistered: true,
+          availableSeats: event.availableSeats - 1,
+        }),
+      );
+    } catch (err) {
+      console.error("Error during registration:", err);
+    }
+  };
 
   if (loading) {
     return (

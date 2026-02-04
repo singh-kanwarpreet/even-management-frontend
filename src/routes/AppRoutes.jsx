@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import EventDetails from "../pages/EventDetails";
 import Navbar from "../components/Navbar.jsx";
+import GuestRoute from "./GuestRoute.jsx";
 
 const AppRoutes = () => {
   return (
@@ -13,8 +14,12 @@ const AppRoutes = () => {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+
+          <Route element={<GuestRoute />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Route>
+
           <Route element={<ProtectedRoute />}>
             <Route path="/event/:id" element={<EventDetails />} />
           </Route>
