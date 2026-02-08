@@ -12,78 +12,81 @@ const EventDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
 
+  const role = useSelector((state) => state.auth.user?.role);
   const event = useSelector((state) => state.events.selectedEvent);
   const loading = useSelector((state) => state.events.loading);
   const error = useSelector((state) => state.events.error);
   const allEvents = useSelector((state) => state.events.events);
-
   const registrations = useSelector(
-    (state) => state.registrations.registeredEvents,
+    (state) => state.registrations.registeredEvents
   );
+
   useEffect(() => {
-    if (!registrations || registrations.length === 0) {
-      dispatch(fetchMyRegistrations());
-    }
+    if(role === "USER" && registrations.length === 0)
+    dispatch(fetchMyRegistrations());
   }, [dispatch]);
-
-  const registeredIds = useMemo(
-    () => new Set(registrations.map((r) => r.eventId?._id)),
-    [registrations],
-  );
-
-  const recommendedEvents = allEvents
-    ?.filter(
-      (e) =>
-        e._id !== id &&
-        e.status === "UPCOMING" &&
-        e.availableSeats > 0 &&
-        !registeredIds.has(e._id),
-    )
-    .slice(0, 3);
 
   useEffect(() => {
     if (id) dispatch(fetchEventById(id));
   }, [dispatch, id]);
 
-  const handleRegister = async (e) => {
-    e.preventDefault();
+  const registeredIds = useMemo(
+    () => new Set(registrations?.map((r) => r.eventId?._id)),
+    [registrations]
+  );
+
+  const recommendedEvents = useMemo(() => {
+    return (
+      allEvents
+        ?.filter(
+          (e) =>
+            e._id !== id &&
+            e.status === "UPCOMING" &&
+            e.availableSeats > 0 &&
+            !registeredIds.has(e._id)
+        )
+        .slice(0, 3) || []
+    );
+  }, [allEvents, id, registeredIds]);
+
+  const handleRegister = async () => {
     try {
       await dispatch(registerForEvent(id)).unwrap();
-      alert("Registration successful!");
+
       dispatch(
         updateSelectedEvent({
           ...event,
           isRegistered: true,
           availableSeats: event.availableSeats - 1,
-        }),
+        })
       );
+
+      alert("Registration successful!");
     } catch (err) {
-      console.error("Error during registration:", err);
+      console.error(err);
     }
   };
 
-  if (loading) {
+  if (loading)
     return (
       <p className="pt-20 p-8 text-center text-gray-500">Loading event...</p>
     );
-  }
 
-  if (error) {
-    return <p className="pt-20 p-8 text-center text-red-500">{error}</p>;
-  }
+  if (error)
+    return (
+      <p className="pt-20 p-8 text-center text-red-500">{error}</p>
+    );
 
-  if (!event) {
+  if (!event)
     return (
       <p className="pt-20 p-8 text-center text-gray-500">Event not found</p>
     );
-  }
 
   const start = new Date(event.startTime);
   const end = new Date(event.endTime);
 
   return (
     <div className="pt-20 p-6 max-w-4xl mx-auto bg-white rounded-2xl shadow-lg">
-      {/* Event Image */}
       {event.image?.url && (
         <img
           src={event.image.url}
@@ -92,7 +95,6 @@ const EventDetails = () => {
         />
       )}
 
-      {/* Title & Status */}
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-3xl font-bold text-gray-800">{event.title}</h1>
         <span
@@ -106,10 +108,8 @@ const EventDetails = () => {
         </span>
       </div>
 
-      {/* Description */}
       <p className="text-gray-700 mb-6">{event.description}</p>
 
-      {/* Date & Time */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
           <h2 className="text-gray-500 text-sm">Start Time</h2>
@@ -121,7 +121,6 @@ const EventDetails = () => {
         </div>
       </div>
 
-      {/* Location & Mode */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
           <h2 className="text-gray-500 text-sm">Location</h2>
@@ -133,7 +132,6 @@ const EventDetails = () => {
         </div>
       </div>
 
-      {/* Capacity & Available Seats */}
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div>
           <h2 className="text-gray-500 text-sm">Capacity</h2>
@@ -145,60 +143,60 @@ const EventDetails = () => {
         </div>
       </div>
 
-      {/* Eligibility */}
       {event.eligibilityRules && (
         <div className="mb-6">
           <h2 className="text-gray-500 text-sm mb-1">Eligibility Age</h2>
           <p className="text-gray-800">
-            {event.eligibilityRules.minAge} - {event.eligibilityRules.maxAge}{" "}
-            years
+            {event.eligibilityRules.minAge} - {event.eligibilityRules.maxAge} years
           </p>
         </div>
       )}
 
-      {/* Register Button */}
-      <div className="mt-8 text-center">
-        {["COMPLETED", "ARCHIVED", "ONGOING"].includes(event.status) ? (
-          <button
-            disabled
-            className="px-6 py-2 rounded-lg bg-gray-300 text-gray-600 cursor-not-allowed"
-          >
-            Event Closed
-          </button>
-        ) : event.isRegistered ? (
-          <button
-            disabled
-            className="px-6 py-2 rounded-lg bg-blue-200 text-blue-800 cursor-not-allowed"
-          >
-            Registered ✓
-          </button>
-        ) : event.availableSeats === 0 ? (
-          <button
-            disabled
-            className="px-6 py-2 rounded-lg bg-red-200 text-red-700 cursor-not-allowed"
-          >
-            Full
-          </button>
-        ) : (
-          <button
-            type="button"
-            onClick={handleRegister}
-            className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
-          >
-            Register Now
-          </button>
-        )}
-      </div>
-      {recommendedEvents?.length > 0 && (
-        <div className="mt-14">
-          <h2 className="text-2xl font-semibold mb-6">Recommended Events</h2>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {recommendedEvents.map((ev) => (
-              <EventCard key={ev._id} event={ev} />
-            ))}
+      {role === "USER" && (
+        <>
+          <div className="mt-8 text-center">
+            {["COMPLETED", "ARCHIVED", "ONGOING"].includes(event.status) ? (
+              <button
+                disabled
+                className="px-6 py-2 rounded-lg bg-gray-300 text-gray-600 cursor-not-allowed"
+              >
+                Event Closed
+              </button>
+            ) : event.isRegistered ? (
+              <button
+                disabled
+                className="px-6 py-2 rounded-lg bg-blue-200 text-blue-800 cursor-not-allowed"
+              >
+                Registered 
+              </button>
+            ) : event.availableSeats === 0 ? (
+              <button
+                disabled
+                className="px-6 py-2 rounded-lg bg-red-200 text-red-700 cursor-not-allowed"
+              >
+                Full
+              </button>
+            ) : (
+              <button
+                onClick={handleRegister}
+                className="px-6 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition"
+              >
+                Register Now
+              </button>
+            )}
           </div>
-        </div>
+
+          {recommendedEvents.length > 0 && (
+            <div className="mt-14">
+              <h2 className="text-2xl font-semibold mb-6">Recommended Events</h2>
+              <div className="grid md:grid-cols-3 gap-6">
+                {recommendedEvents.map((ev) => (
+                  <EventCard key={ev._id} event={ev} />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
