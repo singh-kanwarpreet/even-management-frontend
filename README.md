@@ -30,7 +30,7 @@ Eventify is a **full-stack event management platform** that simplifies organizin
 ## Getting Started
 
 ```bash
-git clone <https://github.com/singh-kanwarpreet/eventify-frontend>
+git clone https://github.com/singh-kanwarpreet/eventify-frontend
 cd eventify-frontend
 npm install
 npm start
