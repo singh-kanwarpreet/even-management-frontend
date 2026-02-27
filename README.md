@@ -1,16 +1,36 @@
-# React + Vite
+# Eventify - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+Eventify is a **full-stack event management platform** that simplifies organizing and managing events. This repository contains the **frontend**, built with **React** and **Redux**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- Clean and responsive user interface for attendees and organizers  
+- Real-time updates on events and attendees  
+- Integration with backend APIs for full event management  
+- Works seamlessly on desktop and mobile devices  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend:** React, Redux, JavaScript, HTML, CSS  
+- **State Management:** Redux for global state handling  
+- **API Integration:** Axios for REST API calls  
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## My Contributions
+
+- Developed **React components** for event listing, registration, and dashboards  
+- Implemented **Redux state management** for efficient data flow  
+- Integrated frontend with backend APIs for **real-time event updates**  
+- Ensured **responsive design** and cross-device compatibility  
+
+## Live Demo
+
+[View Eventify here](<https://eventify-online.vercel.app/>)
+
+## Getting Started
+
+```bash
+git clone <https://github.com/singh-kanwarpreet/eventify-frontend>
+cd eventify-frontend
+npm install
+npm start
