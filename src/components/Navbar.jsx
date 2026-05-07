@@ -55,7 +55,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
             <img
-              src="../../public/logo.png"
+              src="/logo.png"
               alt="Eventify Logo"
               className="h-10 w-10 object-contain"
             />
