@@ -53,8 +53,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link to="/" className="text-2xl font-bold text-blue-600">
-            Eventify
+          <Link to="/" className="flex items-center gap-2">
+            <img
+              src="../../public/logo.png"
+              alt="Eventify Logo"
+              className="h-10 w-10 object-contain"
+            />
+
+            <span className="text-2xl font-bold text-blue-600">Eventify</span>
           </Link>
 
           {/* Desktop */}
